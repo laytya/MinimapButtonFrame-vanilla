@@ -252,7 +252,7 @@ function MBF_OnEvent()
 		MinimapButtonFrame:SetAlpha(opacity);
 		MinimapButtonFrame:SetScale(addonScale);
 		
-		MBFMiniButtonFrame:SetScale(addonScale);
+		
 		
 		MBFC_ColorLocked();
 	elseif (event == "PLAYER_REGEN_DISABLED") then
@@ -965,7 +965,9 @@ local sortChildren = function()
 end
 
 function updatePositions()
-
+	
+	MBFMiniButtonFrame:SetScale(addonScale*(1/Minimap:GetEffectiveScale()))
+	
 	local processMail = false;
 	local childExceptions = 2
 	
@@ -996,7 +998,11 @@ function updatePositions()
 			
 			button:SetFrameStrata("MEDIUM");
 			button:SetFrameLevel(MinimapButtonFrame:GetFrameLevel() + 1);
-
+			if (isButtonFrame(button)) then
+				for i, child in ipairs({button:GetChildren()}) do
+					child:SetFrameLevel(button:GetFrameLevel() + 1)
+				end
+			end
 			if ((mod(iterator-1,columns_or_rows) == 0) and iterator > 1) then
 				if (sort_by_rows) then
 					y = -spacer - 5;
@@ -1051,11 +1057,27 @@ function MBF_Scan()
 	MBFC_KeepBlizzHidden();
 	findButtons(Minimap);
 	findButtons(MinimapBackdrop);
+	scaleButtons(Minimap);
+	scaleButtons(MinimapBackdrop);
 	findIncluded();
 	if isValidAdd(GameTimeFrame, true) then
 		addButton(GameTimeFrame);
 	end
 	updatePositions();
+	
+end
+
+function scaleButtons(frame)
+	
+	for i, child in ipairs({frame:GetChildren()}) do
+		-- if (isValidAdd(child, true)) then
+		--	addButton(child);
+		-- end
+		local frameName = child:GetName();
+		if (frameName and isInTable(MBF_Ignore,frameName) and frameName ~= "MBFMiniButtonFrame") then
+			child:SetScale(addonScale*(1/Minimap:GetEffectiveScale()));
+		end
+	end
 end
 
 -- Configuration Screen Functions --
@@ -1451,7 +1473,7 @@ function MBFC_Defaults()
 	MBFMiniButtonFrame:ClearAllPoints();
 	MBFMiniButtonFrame:SetClampedToScreen(false);
 	MBFMiniButtonFrame:SetPoint("TOPLEFT", Minimap, "LEFT", -30, 10);
-	MBFMiniButtonFrame:SetScale(addonScale);
+	
 
 	for k,v in pairs(BlizzButtons) do
 		button = getglobal(v);
@@ -1597,9 +1619,9 @@ function snapMinimap()
 			y = math.max(-mapSize, math.min(y*diagDist, mapSize));
 		end
 		MBFMiniButtonFrame:SetClampedToScreen(false);
-		MBFMiniButtonFrame:SetPoint("CENTER", Minimap, "CENTER", x/addonScale, y/addonScale);
+	MBFMiniButtonFrame:SetPoint("CENTER", Minimap, "CENTER", x/(addonScale/scale), y/(addonScale/scale));
 	else
-		MBFMiniButtonFrame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", cX/addonScale, cY/addonScale);
+		MBFMiniButtonFrame:SetPoint("CENTER", UIParent, "BOTTOMLEFT", cX/(addonScale/scale), cY/(addonScale/scale));
 		MBFMiniButtonFrame:SetClampedToScreen(true);
 	end
 	
