@@ -1,0 +1,15 @@
+CT requires a little tweaking to get it working with MBF.
+
+The button of CTMod2 has no name.
+
+For it to work with MBF it needs one.
+
+To do this you have to edit the CT_Core\CT_Core.lua file and change the line that says:
+
+minimapFrame = module:getFrame(minimapFrameSkeleton);
+
+to
+
+minimapFrame = module:getFrame(minimapFrameSkeleton, nil, "CTMod2_MinimapButton");
+
+That's the only way, unless you can convince the authors to give it a name of some sort.  :)

@@ -1,0 +1,25 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Frame parent="UIParent">
+		<Frames>
+			<Button name="TitanPanelMBFButton" inherits="TitanPanelComboTemplate" frameStrata="FULLSCREEN" toplevel="true">
+				<Scripts>
+					<OnLoad>
+						if ( IsAddOnLoaded("Titan") ) then
+							TitanPanelMBFButton_OnLoad();
+							TitanPanelButton_OnLoad();
+						end
+					</OnLoad>
+					<OnClick>
+						if IsShiftKeyDown() then
+							MBFC_Toggle();
+						elseif ( arg1 == "LeftButton" ) then
+							MBFC_Visible(2, this:GetParent():GetName());
+						end
+						TitanPanelButton_OnClick(arg1, 1);
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+	</Frame>
+</Ui>

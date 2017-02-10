@@ -1,0 +1,16 @@
+<Bindings>
+	<Binding name="MBF_CONFIG" description="Toggle the MBF Config Window" header="MBF_SEP">
+		MBFC_Toggle()
+	</Binding>
+	<Binding name="MBF_TOGGLE" description="Toggle the MBF Main Window">
+		MBFC_Visible(1)
+	</Binding>
+	<Binding name="MBF_ADD" description="Add the button under the mouse to MBF">
+		includeButton(GetMouseFocus());
+	</Binding>
+	<Binding name="MBF_REMOVE" description="Remove the button under the mouse from MBF">
+		if (GetMouseFocus():GetName() ~= "WorldFrame") then
+				removeButton(GetMouseFocus(), 0)
+		end
+	</Binding>
+</Bindings>

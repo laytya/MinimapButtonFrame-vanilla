@@ -1,0 +1,23 @@
+## Interface: 20400
+## Title: Minimap Button Frame
+## Notes: Collects the minimap buttons and puts them into a moveable frame.
+## Author: Bachlott
+## Version: 1.9a
+## SavedVariablesPerCharacter: MBF_Vars, MBF_Ignore, MBF_Include, MBF_FrameLocation, MBFFuDB
+## OptionalDeps: Ace2, Titan, FuBar, FuBarPlugin-2.0
+## X-Category: Interface Enhancements
+
+localization\localization-en.lua
+localization\localization-deDE.lua
+localization\localization-frFR.lua
+localization\localization-esES.lua
+localization\localization-koKR.lua
+localization\localization-zhCN.lua
+localization\localization-zhTW.lua
+
+MinimapButtonFrame.lua
+MinimapButtonFrame.xml
+
+MBFTitan.lua
+MBFTitan.xml
+MBFFu.lua

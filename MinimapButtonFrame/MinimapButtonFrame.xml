@@ -1,0 +1,871 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+<Frame name="MinimapButtonFrame" toplevel="true" parent="UIParent" movable="true" clampedToScreen="true" hidden="false" frameStrata="LOW">
+	<Size x="20" y="20"/>
+	<Anchors>
+		<Anchor point="CENTER"/>
+	</Anchors>
+  <Backdrop bgFile="Interface/Tooltips/UI-Tooltip-Background" edgeFile="Interface/Tooltips/UI-Tooltip-Border" tile="true">
+	<EdgeSize>
+		<AbsValue val="16"/>
+	</EdgeSize>
+	<TileSize>
+		<AbsValue val="16"/>
+	</TileSize>
+	<BackgroundInsets>
+		<AbsInset left="5" right="5" top="5" bottom="5"/>
+	</BackgroundInsets>
+  </Backdrop>
+  <Frames>
+	<Button name="$parentDragButton" >
+		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="false">
+		    <BackgroundInsets>
+		        <AbsInset left="5" right="5" top="5" bottom="5" />
+		    </BackgroundInsets>
+			<TileSize>
+			    <AbsValue val="10" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="10" />
+			</EdgeSize>	
+			<Color r="1" g="0.5" b="0.5" />
+		</Backdrop>
+		<Size>
+			<AbsDimension x="75" y="25"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT" relativePoint="TOPLEFT"><Offset><AbsDimension x="0" y="27"/></Offset></Anchor>
+		</Anchors>
+		<Scripts>
+			<OnClick>
+				if (IsShiftKeyDown()) then						
+					MBFC_Toggle();
+				elseif ( arg1 == "RightButton" ) then
+					MBFC_RollUp(1);
+					MBFC_Visible(1);
+				end
+			</OnClick>
+			<OnMouseDown>
+				if (arg1 == "LeftButton") then
+					MBF_OnDragStart();
+				end
+			</OnMouseDown>
+			<OnMouseUp>
+				if (arg1 == "LeftButton") then
+					MBF_OnDragStop();
+				end
+			</OnMouseUp>
+			<OnEnter>
+				RollUp_OnEnter(1);
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+	</Button>
+	<Button name="MiniMapMailFrameDisabled" hidden="true">
+		<HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
+		<DisabledTexture file="Interface\Minimap\UI-Minimap-ZoomOutButton-Disabled"/>
+		<Size>
+			<AbsDimension x="33" y="33"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="BORDER">
+				<Texture name="$parentNoMail" file="Interface\Icons\INV_Letter_15">
+					<Size>
+						<AbsDimension x="18" y="18"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="7" y="-6"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="OVERLAY">
+				<Texture name="$parentBorder" file="Interface\Minimap\MiniMap-TrackingBorder">
+					<Size>
+						<AbsDimension x="52" y="52"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnLoad>
+				SetDesaturation(getglobal(this:GetName().."NoMail"), 1);
+			</OnLoad>
+			<OnEnter>
+				NoMail_OnEnter();
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+	</Button>
+  </Frames>
+  <Scripts>
+    <OnLoad>
+		MBF_OnLoad();
+	</OnLoad>
+    <OnUpdate>
+		MBF_OnUpdate(arg1);
+    </OnUpdate>
+    <OnEvent>
+		MBF_OnEvent();
+    </OnEvent>
+	<OnDragStart>
+		MBF_OnDragStart();
+	</OnDragStart>
+	<OnDragStop>
+		MBF_OnDragStop();		
+	</OnDragStop>
+  </Scripts>
+</Frame>
+
+<Frame name="MBFC" frameStrata="DIALOG" toplevel="true" movable="true" parent="UIParent" hidden="true">
+	<Size x="600" y="410"/>
+	<Anchors>
+		<Anchor point="CENTER"/>
+	</Anchors>
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+		<EdgeSize>
+			<AbsValue val="16"/>
+		</EdgeSize>
+		<TileSize>
+			<AbsValue val="16"/>
+		</TileSize>
+		<BackgroundInsets>
+			<AbsInset left="5" right="5" top="5" bottom="5"/>
+		</BackgroundInsets>
+	</Backdrop>
+	<Layers>
+		<Layer level="ARTWORK">
+			<Texture name="OptionsFrameHeader" file="Interface\DialogFrame\UI-DialogBox-Header">
+				<Size>
+					<AbsDimension x="320" y="64"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOP">
+						<Offset>
+							<AbsDimension x="0" y="12"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Texture>
+			<FontString inherits="GameFontNormal" text="MBF_CONFIG_MBFOptions">
+				<Anchors>
+					<Anchor point="TOP">
+						<Offset>
+							<AbsDimension x="0" y="-2"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</FontString>
+		</Layer>
+	</Layers>
+	<Frames>
+		<Frame name="MBFCTabContainerFrame">
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="10" y="-50"/>
+					</Offset>
+				</Anchor>
+				<Anchor point="BOTTOMRIGHT">
+					<Offset>
+						<AbsDimension x="-10" y="50"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Backdrop bgfile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="false">
+				<EdgeSize>
+					<AbsValue val="16"/>
+				</EdgeSize>
+				<TileSize>
+					<AbsValue val="16"/>
+				</TileSize>
+				<BackgroundInsets>
+					<AbsInset left="5" right="5" top="5" bottom="5" />
+				</BackgroundInsets>
+			</Backdrop>
+			<Frames>
+				<Frame name="MBFCTabPage1" hidden="false">
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<Frames>
+						<CheckButton name="MBFCSortbyRows" inherits="OptionsCheckButtonTemplate">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="50" y="-30"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_SortbyRows);
+								</OnLoad>
+								<OnClick>
+									MBFC_SortbyRowsToggle();
+								</OnClick>
+							</Scripts>
+						</CheckButton>		
+						<CheckButton name="MBFCLocked" inherits="OptionsCheckButtonTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="50" y="-60"/>
+							</Offset>
+						</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_Locked);
+							</OnLoad>
+							<OnClick>
+								MBFC_LockedToggle();
+							</OnClick>
+						</Scripts>
+						</CheckButton>
+						<Button name="MBFCSortDropDown" inherits="UIDropDownMenuTemplate">
+							<Layers>
+								<Layer level="BACKGROUND">
+									<FontString name="$parentLabel" inherits="GameFontNormalSmall" text="MBF_CONFIG_SortOrder">
+										<Anchors>
+											<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+												<Offset>
+													<AbsDimension x="21" y="0"/>
+												</Offset>
+											</Anchor>
+										</Anchors>
+									</FontString>
+								</Layer>
+							</Layers>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="40" y="-140"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Button>
+						<Button name="MBFCColorLockedDropDown" inherits="UIDropDownMenuTemplate">
+							<Layers>
+								<Layer level="BACKGROUND">
+									<FontString name="$parentLabel" inherits="GameFontNormalSmall" text="MBF_CONFIG_HideLocked">
+										<Anchors>
+											<Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+												<Offset>
+													<AbsDimension x="21" y="0"/>
+												</Offset>
+											</Anchor>
+										</Anchors>
+									</FontString>
+								</Layer>
+							</Layers>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="40" y="-100"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Button>
+						<Slider name="MBFCSliderColumns" inherits="OptionsSliderTemplate" text="MBF_CONFIG_ColumnsorRows">
+							<Size>
+								<AbsDimension x="240" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="30" y="-190" />
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_ColumnsorRows);
+									this:SetMinMaxValues(1, 50);
+									getglobal(this:GetName().."Low"):SetText(1);
+									getglobal(this:GetName().."High"):SetText(50);
+									this:SetValueStep(1);
+								</OnLoad>
+								<OnValueChanged>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_ColumnsorRows .. " ("..this:GetValue() .. ")");
+									MBFC_SliderColumnsUpdate(this:GetValue());
+								</OnValueChanged>
+							</Scripts>
+						</Slider>
+						<Slider name="MBFCSliderPadding" inherits="OptionsSliderTemplate" text="MBF_CONFIG_Padding">
+							<Size>
+								<AbsDimension x="240" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="30" y="-250" />
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_Padding);
+									this:SetMinMaxValues(0, 20);
+									getglobal(this:GetName().."Low"):SetText(0);
+									getglobal(this:GetName().."High"):SetText(20);
+									this:SetValueStep(1);
+								</OnLoad>
+								<OnValueChanged>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_Padding .. " ("..this:GetValue() .. ")");
+									MBFC_SliderPaddingUpdate(this:GetValue());
+								</OnValueChanged>
+							</Scripts>
+						</Slider>
+						<Slider name="MBFCSliderOpacity" inherits="OptionsSliderTemplate" text="MBF_CONFIG_Opacity">
+							<Size>
+								<AbsDimension x="240" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="310" y="-190" />
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_Opacity);
+									this:SetMinMaxValues(0, 1);
+									getglobal(this:GetName().."Low"):SetText(0);
+									getglobal(this:GetName().."High"):SetText(1);
+									this:SetValueStep(.05);
+								</OnLoad>
+								<OnValueChanged>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_Opacity .. " (".. format("%.2f", this:GetValue()) .. ")");
+									MBFC_SliderOpacityUpdate(this:GetValue());
+								</OnValueChanged>
+							</Scripts>
+						</Slider>
+						<Slider name="MBFCSliderScale" inherits="OptionsSliderTemplate" text="MBF_CONFIG_Scale">
+							<Size>
+								<AbsDimension x="240" y="16"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="310" y="-250" />
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_Scale);
+									this:SetMinMaxValues(0.50, 2);
+									getglobal(this:GetName().."Low"):SetText(.50);
+									getglobal(this:GetName().."High"):SetText(2);
+									this:SetValueStep(.05);
+								</OnLoad>
+								<OnValueChanged>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_Scale .. " (".. format("%.2f", this:GetValue()) .. ")");
+									MBFC_SliderScaleUpdate(this:GetValue());
+								</OnValueChanged>
+							</Scripts>
+						</Slider>
+						<ColorSelect name="MBFCColorSelect" text="MBF_CONFIG_BackgroundColor" enableMouse="true">
+							<Size>
+								<AbsDimension x="100" y="100"></AbsDimension>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+										<Offset>
+											<AbsDimension x="350" y="-40"></AbsDimension>
+										</Offset>
+								</Anchor>
+							</Anchors>
+							<ColorWheelTexture name="CPColorPickerWheel">
+								<Size>
+									<AbsDimension x="60" y="60"/>
+								</Size>
+								<Anchors>
+									<Anchor point="LEFT">
+										<Offset>
+											<AbsDimension x="7" y="4"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</ColorWheelTexture>
+							<ColorWheelThumbTexture file="Interface\Buttons\UI-ColorPicker-Buttons">
+								<Size>
+									<AbsDimension x="10" y="10"/>
+								</Size>
+								<TexCoords left="0" right="0.15625" top="0" bottom="0.625"/>
+							</ColorWheelThumbTexture>
+							<ColorValueTexture>
+								<Size>
+									<AbsDimension x="20" y="60"/>
+								</Size>
+								<Anchors>
+									<Anchor point="LEFT">
+										<Offset>
+											<AbsDimension x="90" y="0"/>
+										</Offset>
+									</Anchor>
+								</Anchors>
+							</ColorValueTexture>
+							<ColorValueThumbTexture file="Interface\Buttons\UI-ColorPicker-Buttons">
+								<Size>
+									<AbsDimension x="32" y="12"/>
+								</Size>
+								<TexCoords left="0.25" right="1.0" top="0" bottom="0.875"/>
+							</ColorValueThumbTexture>
+							<Scripts>
+								<OnColorSelect>
+									MBFC_ColorUpdate();
+								</OnColorSelect>
+							</Scripts>
+						</ColorSelect>
+						<Slider name="MBFCSliderColorOpacity" inherits="OptionsSliderTemplate" text="MBF_CONFIG_Opacity" orientation="Vertical">
+							<Size>
+								<AbsDimension x="10" y="80"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="490" y="-50" />
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText("");
+									this:SetMinMaxValues(0, 1);
+									this:SetValueStep(.05);
+									getglobal(this:GetName().."Low"):SetText("");
+									getglobal(this:GetName().."High"):SetText("");
+								</OnLoad>
+								<OnValueChanged>
+									MBFC_ColorOpacityUpdate(this:GetValue());
+								</OnValueChanged>
+							</Scripts>
+						</Slider>						
+					</Frames>
+				</Frame>
+		  
+				<Frame name="MBFCTabPage2" hidden="true">
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<Frames>
+						<CheckButton name="MBFCMinimapButton" inherits="OptionsCheckButtonTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="50" y="-30"/>
+							</Offset>
+						</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_ShowMinimapButton);
+							</OnLoad>
+							<OnClick>
+								MBFC_MinimapButtonToggle();
+							</OnClick>
+						</Scripts>
+						</CheckButton>
+						<CheckButton name="MBFCGrabBlizzButtons" inherits="OptionsCheckButtonTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="50" y="-60"/>
+							</Offset>
+						</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_CollectBlizz);
+							</OnLoad>
+							<OnClick>
+								MBFC_GrabBlizzButtonsToggle();
+							</OnClick>
+						</Scripts>
+						</CheckButton>
+						<CheckButton name="MBFCGrabMBFButton" inherits="OptionsCheckButtonTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="50" y="-90"/>
+							</Offset>
+						</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_CollectMBF);
+							</OnLoad>
+							<OnClick>
+								MBFC_GrabMBFButtonToggle();
+							</OnClick>
+						</Scripts>
+						</CheckButton>
+						<CheckButton name="MBFCDisabledMail" inherits="OptionsCheckButtonTemplate">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="50" y="-120"/>
+								</Offset>
+							</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_DisabledMail);
+								</OnLoad>
+								<OnClick>
+									MBFC_DisabledMailToggle();
+								</OnClick>
+							</Scripts>
+						</CheckButton>
+						<CheckButton name="MBFCActiveScanning" inherits="OptionsCheckButtonTemplate">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="50" y="-150"/>
+								</Offset>
+							</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_ActiveScanning);
+								</OnLoad>
+								<OnClick>
+									MBFC_ActiveScanningToggle();
+								</OnClick>
+							</Scripts>
+						</CheckButton>
+						<Button name="MBFCDefaults" inherits="UIPanelButtonTemplate" text="MBF_CONFIG_SetDefaults">
+							<Size>
+								<AbsDimension x="80" y="32"/>
+							</Size>
+							<Anchors>
+								<Anchor point="TOPLEFT">
+									<Offset>
+										<AbsDimension x="50" y="-260"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnClick>
+									MBFC_Defaults();
+								</OnClick>
+							</Scripts>
+						</Button>
+						<CheckButton name="MBFCHideMiniMapMailFrame" inherits="OptionsCheckButtonTemplate">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="320" y="-30"/>
+								</Offset>
+							</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_HideMail);
+								</OnLoad>
+								<OnClick>
+									MBFC_BlizzButtonToggle("MiniMapMailFrame");
+								</OnClick>
+							</Scripts>
+						</CheckButton>
+						<CheckButton name="MBFCHideMiniMapTracking" inherits="OptionsCheckButtonTemplate">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="320" y="-60"/>
+								</Offset>
+							</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_HideTracking);
+								</OnLoad>
+								<OnClick>
+									MBFC_BlizzButtonToggle("MiniMapTracking");
+								</OnClick>
+							</Scripts>
+						</CheckButton>
+						<CheckButton name="MBFCHideGameTimeFrame" inherits="OptionsCheckButtonTemplate">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="320" y="-90"/>
+								</Offset>
+							</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_HideGameTime);
+								</OnLoad>
+								<OnClick>
+									MBFC_BlizzButtonToggle("GameTimeFrame");
+								</OnClick>
+							</Scripts>
+						</CheckButton>
+						<CheckButton name="MBFCHideMinimapZoomIn" inherits="OptionsCheckButtonTemplate">
+							<Anchors>
+								<Anchor point="TOPLEFT">
+								<Offset>
+									<AbsDimension x="320" y="-120"/>
+								</Offset>
+							</Anchor>
+							</Anchors>
+							<Scripts>
+								<OnLoad>
+									getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_HideZoom);
+								</OnLoad>
+								<OnClick>
+									MBFC_BlizzButtonToggle("MinimapZoomIn");
+								</OnClick>
+							</Scripts>
+						</CheckButton>
+					</Frames>
+				</Frame>
+				<Button name="$parentTab1" inherits="CharacterFrameTabButtonTemplate" id="1" text="MBF_CONFIG_Display">
+					<Anchors>
+						<Anchor point="CENTER" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="60" y="-12" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Scripts>
+						<OnClick>
+							PanelTemplates_SetTab(MBFCTabContainerFrame, 1);
+							MBFCTabPage1:Show();
+							MBFCTabPage2:Hide();
+						</OnClick>
+					</Scripts>
+				</Button>
+				<Button name="$parentTab2" inherits="CharacterFrameTabButtonTemplate" id="2" text="MBF_CONFIG_Gathering">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="-16" y="0" />
+							</Offset>
+						</Anchor>
+					</Anchors>
+					<Scripts>
+						<OnClick>
+							PanelTemplates_SetTab(MBFCTabContainerFrame, 2);
+							MBFCTabPage2:Show();
+							MBFCTabPage1:Hide();
+						</OnClick>
+					</Scripts>
+				</Button>
+			</Frames>
+			<Scripts>
+				<OnLoad>
+					this.elapsed = 0;
+					PanelTemplates_SetNumTabs(MBFCTabContainerFrame, 2);
+					PanelTemplates_SetTab(MBFCTabContainerFrame, 1);
+				</OnLoad>
+				<OnShow>
+					PanelTemplates_SetTab(MBFCTabContainerFrame, 1);
+					MBFCTabPage1:Show()
+					MBFCTabPage2:Hide()
+				</OnShow>
+			</Scripts>
+		</Frame>
+		<Button name="$parentClose" inherits="UIPanelButtonTemplate" text="MBF_CONFIG_Ok">
+			<Size>
+				<AbsDimension x="80" y="32"/>
+			</Size>
+			<Anchors>
+				<Anchor point="BOTTOMRIGHT">
+					<Offset>
+						<AbsDimension x="-22" y="18"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick>
+					MBFC_Toggle();
+				</OnClick>
+			</Scripts>
+		</Button>
+	</Frames>
+	<Scripts>
+		<OnMouseDown>
+			this:StartMoving();
+			this.isMoving = true;
+		</OnMouseDown>
+		<OnMouseUp>
+			this:StopMovingOrSizing();
+			this.isMoving = false;
+		</OnMouseUp>
+	</Scripts>
+</Frame>
+
+
+<Frame name="MBFRestoreButtonFrame" parent="UIParent" enableMouse="true" movable="true" hidden="false" clampedToScreen="true" frameStrata="LOW">
+	<Size>
+		<AbsDimension x="75" y="25"/>
+	</Size>
+	<Anchors>
+		<Anchor point="TOPLEFT" relativeTo="MinimapButtonFrame" relativePoint="TOPLEFT">
+			<Offset>
+				<AbsDimension x="0" y="27"/>
+			</Offset>
+		</Anchor>
+	</Anchors>
+	<Frames>
+	<Button name="MBFRestoreButton" hidden="true">
+		<Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="false">
+		    <BackgroundInsets>
+		        <AbsInset left="5" right="5" top="5" bottom="5" />
+		    </BackgroundInsets>
+			<TileSize>
+			    <AbsValue val="10" />
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="10" />
+			</EdgeSize>	
+			<Color r="1" g="0.5" b="0.5" />
+		</Backdrop>
+		<Size>
+			<AbsDimension x="75" y="25"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT" relativePoint="TOPLEFT"><Offset><AbsDimension x="0" y="0"/></Offset></Anchor>
+		</Anchors>
+		<Scripts>
+			<OnClick>
+				if (IsShiftKeyDown()) then						
+					MBFC_Toggle();
+				elseif ( arg1 == "RightButton" ) then
+					MBFC_RollUp(2);
+					MBFC_Visible(1);
+				end
+			</OnClick>
+			<OnMouseDown>
+				if (arg1 == "LeftButton") then
+					MBF_OnDragStart();
+				end
+			</OnMouseDown>
+			<OnMouseUp>
+				if (arg1 == "LeftButton") then
+					MBF_OnDragStop();
+				end
+			</OnMouseUp>
+			<OnEnter>
+				RollUp_OnEnter(2);
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+	</Button>
+	</Frames>
+</Frame>
+
+<Frame name="MBFMiniButtonFrame" parent="Minimap" enableMouse="true" movable="true" hidden="false" clampedToScreen="false" frameStrata="HIGH">
+	<Size>
+		<AbsDimension x="32" y="32"/>
+	</Size>
+	<Anchors>
+		<Anchor point="TOPLEFT" relativeTo="Minimap" relativePoint="LEFT">
+			<Offset>
+				<AbsDimension x="-30" y="10"/>
+			</Offset>
+		</Anchor>
+	</Anchors>
+	<Frames>
+		<Button name="MBFButton">
+			<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Round" />
+			<Size>
+				<AbsDimension x="33" y="33"/>
+			</Size>
+			<Anchors>
+				<Anchor point="TOPLEFT">
+					<Offset>
+						<AbsDimension x="0" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+			<Layers>
+				<Layer level="BORDER">
+					<Texture name="$parentIcon" file="Interface\Icons\INV_Misc_Coin_11">
+						<Size>
+							<AbsDimension x="20" y="20"/>
+						</Size>
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset>
+									<AbsDimension x="-1" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+					</Texture>
+				</Layer>
+				<Layer level="OVERLAY">
+					<Texture name="$parentBorder" file="Interface\Minimap\MiniMap-TrackingBorder">
+						<Size>
+							<AbsDimension x="52" y="52"/>
+						</Size>
+						<Anchors>
+							<Anchor point="TOPLEFT"/>
+						</Anchors>
+					</Texture>
+				</Layer>
+			</Layers>
+			<Scripts>
+				<OnLoad>
+					getglobal(this:GetName().."Icon"):SetVertexColor(1, 1, 0);
+				</OnLoad>
+				<OnClick>
+					if (IsShiftKeyDown()) then						
+						MBFC_Toggle();
+					elseif ( arg1 == "LeftButton" ) then
+						MBFC_Visible(1);
+					end
+				</OnClick>
+				<OnMouseDown>
+					if ( arg1 == "RightButton" ) then
+						MBFMiniButtonFrame:StartMoving();
+						MBFMiniButtonFrame.isMoving = true;
+						MBFMiniButtonFrame:SetScript("OnUpdate", snapMinimap);
+					end
+				</OnMouseDown>
+				<OnMouseUp>
+					if ( arg1 == "RightButton" ) then
+						MBFMiniButtonFrame:StopMovingOrSizing();
+						MBFMiniButtonFrame.isMoving = false;
+						MBFMiniButtonFrame:SetScript("OnUpdate", nil);
+					end
+				</OnMouseUp>
+				<OnEnter>
+					mbfButton_OnEnter();
+				</OnEnter>
+				<OnLeave>
+					GameTooltip:Hide();
+				</OnLeave>
+			</Scripts>
+		</Button>
+	</Frames>
+</Frame>
+</Ui>
