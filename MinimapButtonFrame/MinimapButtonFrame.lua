@@ -1,4 +1,4 @@
-local version = "1.9a";
+local version = GetAddOnMetadata("MinimapButtonFrame", "Version");
 local time = 0;
 local scanned = false;
 local paused = false;
