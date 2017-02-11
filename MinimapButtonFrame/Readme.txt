@@ -124,7 +124,10 @@ History
 	Fixed - Incompatability with Notes
 	Fixed - Incompatability with CT_RaidAssist
 	
-
+1.10 Backported to vanilla
+	 + update TOC
+	 + added ruRU locale
+	 + minor fixes
 	
 	
 Known Incompatibilities / Bugs
