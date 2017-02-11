@@ -13,7 +13,7 @@ If Active Scanning is off they will not be gathered unless you do a < /mbf scan 
 
 #Basic install instructions
   - Extract the archive
-  - Copy "MBB" folder into your "<WOW FOLDER>/Interface/Addons/" directory
+  - Copy "MinimapButtonFrame" folder into your "<WOW FOLDER>/Interface/Addons/" directory
 
 
 #Commands:
