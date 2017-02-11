@@ -1,5 +1,10 @@
 # Minimap Button Frame Vanilla
  
+ 
+ ![Imgur](http://i.imgur.com/Tkf3gaa.jpg) ![Imgur](http://i.imgur.com/Kn2r6R5.jpg)
+ 
+ ![Imgur](http://i.imgur.com/4swDXim.jpg)
+ 
 This addon gathers up all of your minimap addon buttons and puts them into a movable frame.
 
 To Add a button not automatically gathered: Put your mouse over the button you want to add and type < /mbf add >.  
