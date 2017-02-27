@@ -41,14 +41,17 @@ Minimap Button:
 
 
 #History
-	
-1.10 
+
+1.10a	
+
++ fix MiniMapTrackingFrame error
++ fix some interaddon compatibility, dont use such names:  "minimapButton"	
+
+1.10
+
 + Backported to vanilla
-
 + update TOC
-
 + added ruRU locale
-
 + minor fixes
 	
 # Download

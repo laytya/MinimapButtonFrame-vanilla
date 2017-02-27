@@ -10,7 +10,7 @@
 ## Notes-zhCN: 收集minimap按钮和使他们成为一个可移动的框架。
 ## Notes-zhTW: 收集minimap按鈕和使他們成為一個可移動的框架。
 ## Author: Bachlott
-## Version: 1.10
+## Version: 1.10a
 ## SavedVariablesPerCharacter: MBF_Vars, MBF_Ignore, MBF_Include, MBF_FrameLocation, MBFFuDB
 ## OptionalDeps: Ace2, Titan, FuBar, FuBarPlugin-2.0
 ## X-Category: Interface Enhancements

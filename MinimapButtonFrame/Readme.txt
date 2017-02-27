@@ -128,7 +128,9 @@ History
 	 + update TOC
 	 + added ruRU locale
 	 + minor fixes
-	
+1.10a	
+	+ fix MiniMapTrackingFrame error
+	+ fix some interaddon compatibility, dont use such names:  "minimapButton"	
 	
 Known Incompatibilities / Bugs
 

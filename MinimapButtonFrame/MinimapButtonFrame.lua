@@ -31,7 +31,7 @@ local opacity = 1;
 local sort_by_rows = false;
 local locked = false;
 local colorLocked = "Nothing";
-minimapButton = true;
+MBFminimapButton = true;
 mbfHidden = false;
 local grabBlizzButtons = false;
 grabMBFButton = false;
@@ -70,8 +70,7 @@ local MinimapShapes = {
 	["TRICORNER-BOTTOMRIGHT"] 	= {true, true, true, false},
 }
 
-
-local BlizzButtons = { "MiniMapTracking", "MiniMapMeetingStoneFrame", "MinimapZoomIn", "MinimapZoomOut", "MiniMapMailFrame", "MiniMapBattlefieldFrame", "GameTimeFrame" };
+local BlizzButtons = { "MiniMapTrackingFrame", "MiniMapMeetingStoneFrame", "MinimapZoomIn", "MinimapZoomOut", "MiniMapMailFrame", "MiniMapBattlefieldFrame", "GameTimeFrame" };
 local BlizzUI = { "ActionBar", "BonusActionButton", "MainMenu", "ShapeshiftButton", "MultiBar", "KeyRingButton", "PlayerFrame", "TargetFrame", "PartyMemberFrame", "ChatFrame", "ExhaustionTick", "TargetofTargetFrame", "WorldFrame", "ActionButton", "CharacterMicroButton", "SpellbookMicroButton", "TalentMicroButton", "QuestLogMicroButton", "SocialsMicroButton", "LFGMicroButton", "HelpMicroButton", "CharacterBag", "PetFrame",  "MinimapCluster", "MinimapBackdrop", "UIParent", "WorldFrame", "Minimap", "BuffButton", "BuffFrame", "TimeManagerClockButton" };
 local UserUIProtected = { "TitanPanel", "AutoBarButton", "FuBarFrame", "RicoMinimap_CoordinatesFrame", "MinimapZoom", "MinimapButtonFrame", "Xparky", "MBFRestoreButton", "BasicMiniMap", "CT_RASetsFrame", "simpleMinimapFrame"};
 local MinimapIcons = { "Note", "JQuest", "Naut_", "MinimapIcon", "GatherMatePin", "WestPointer", "Chinchilla_", "SmartMinimapZoom","QuestieNote", "smm" };
@@ -149,8 +148,8 @@ function fixNils()
 	if (colorLocked == nil) then
 		colorLocked = "Nothing";
 	end
-	if (minimapButton == nil) then
-		minimapButton = true;
+	if (MBFminimapButton == nil) then
+		MBFminimapButton = true;
 	end
 	if (mbfHidden == nil) then
 		mbfHidden = false;
@@ -201,7 +200,7 @@ function MBF_OnEvent()
 	
 	if ((event == "ADDON_LOADED") and (arg1 == "MinimapButtonFrame")) then	
 		if (initMBF_Vars ~= MBF_Vars) then
-			padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, minimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTracking, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp = unpack(MBF_Vars);
+			padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTracking, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp = unpack(MBF_Vars);
 			fixNils();			
 			updateMBFVars();
 		end
@@ -222,7 +221,7 @@ function MBF_OnEvent()
 		
 		MBFC_KeepBlizzHidden();
 		
-		if (minimapButton) then
+		if (MBFminimapButton) then
 			MBFMiniButtonFrame:Show();
 		else
 			MBFMiniButtonFrame:Hide();
@@ -419,7 +418,7 @@ function ShowDebugValues(typeCast)
 		else
 			printf("Frame Visible  : false");
 		end
-		if (minimapButton) then
+		if (MBFminimapButton) then
 			printf("Button Visible : true");
 		else
 			printf("Button Visible : false");
@@ -509,7 +508,12 @@ end
 getTopParent = function(frame) 
 -- returns 1 for ParentStop parent, and 0 for MBF
 	local result;
-	local parentName = frame:GetParent():GetName();
+	local parentName
+	if frame:GetParent() then 
+		parentName = frame:GetParent():GetName(); 
+	else
+		return 1;
+	end
 
 	if (isInTable(ParentStop,parentName)) then 
 		result = 1
@@ -1084,7 +1088,7 @@ end
 
 function updateMBFVars()
 
-	MBF_Vars = { padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, minimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTracking, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp };
+	MBF_Vars = { padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTracking, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp };
 end
 
 function MBFC_Toggle ()
@@ -1168,8 +1172,8 @@ function MBFC_SortbyRowsToggle()
 end
 
 function MBFC_MinimapButtonToggle()
-	if (minimapButton) then
-		minimapButton = false;
+	if (MBFminimapButton) then
+		MBFminimapButton = false;
 		if (grabMBFButton) then
 			removeButton(MBFButton, 0);
 		end
@@ -1178,7 +1182,7 @@ function MBFC_MinimapButtonToggle()
 		MinimapButtonFrame:SetFrameLevel(2);
 		mbfHidden = false;
 	else
-		minimapButton = true;
+		MBFminimapButton = true;
 		MBFMiniButtonFrame:Show();
 		if (grabMBFButton) then
 			MBF_Scan();
@@ -1456,7 +1460,7 @@ function MBFC_Defaults()
 	MBF_Include = { };
 	MBF_FrameLocation = { "CENTER", "CENTER", 0, 0 };
 	MBF_Vars = { 5, 3, .8, false, 1, false, false, "Nothing", true, false, false, false, 1, { 0, 0, 0}, true, "Alpha", false, false, false, false, false, false, true, false };
-	padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, minimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTracking, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp = unpack(MBF_Vars);
+	padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTracking, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp = unpack(MBF_Vars);
 
 	setMBFLocation();
 	MinimapButtonFrame:SetUserPlaced(false);
@@ -1506,7 +1510,7 @@ function MBFC_Init()
 	MBFCSliderPadding:SetValue(padding);
 	MBFCSliderOpacity:SetValue(opacity);
 	MBFCSliderScale:SetValue(addonScale);
-	MBFCMinimapButton:SetChecked(minimapButton);
+	MBFCMinimapButton:SetChecked(MBFminimapButton);
 	MBFCGrabBlizzButtons:SetChecked(grabBlizzButtons);
 	MBFCGrabMBFButton:SetChecked(grabMBFButton);
 	MBFCSliderColorOpacity:SetValue(colorOpacity);
