@@ -76,8 +76,9 @@ local UserUIProtected = { "TitanPanel", "AutoBarButton", "FuBarFrame", "RicoMini
 local MinimapIcons = { "Note", "JQuest", "Naut_", "MinimapIcon", "GatherMatePin", "WestPointer", "Chinchilla_", "SmartMinimapZoom","QuestieNote", "smm" };
 local ParentStop = { "WorldFrame", "Minimap", "MinimapBackdrop", "UIParent", "MinimapCluster", "CECBMiniMapButtonFrame", "CT_RASetsFrame", "simpleMinimapFrame" };
 
-MBF_Ignore = { "MetamapButton" };
-MBF_Include = { };
+MBF_Default_Ignore = { "MetamapButton" };
+MBF_Default_Include = { "DPSMate_MiniMap"};
+
 MBF_FrameLocation = { "CENTER", "CENTER", 0, 0 };
 MBF_Vars = { 5, 3, .8, false, 1, false, false, "Nothing", true, false, false, false, 1, { 0, 0, 0}, true, "Alpha", false, false, false, false, false, false, true, false };
 
@@ -85,6 +86,20 @@ local initMBF_Vars = MBF_Vars;
 local initMBF_FrameLocation = MBF_FrameLocation;
 
 -- Init and Event Handler Functions
+
+--Code by Grayhoof (SCT)
+local function CloneTable(t)				-- return a copy of the table t
+	local new = {};					-- create a new table
+	local i, v = next(t, nil);		-- i is an index of t, v = t[i]
+	while i do
+		if type(v)=="table" then 
+			v=CloneTable(v);
+		end 
+		new[i] = v;
+		i, v = next(t, i);			-- get next index
+	end
+	return new;
+end
 
 function MBF_OnLoad()
 	SLASH_MBF1 = "/mbf";
@@ -205,10 +220,10 @@ function MBF_OnEvent()
 			updateMBFVars();
 		end
 		if (MBF_Include == nil) then
-			MBF_Include = { }
+			MBF_Include = CloneTable(MBF_Default_Include)
 		end
 		if (MBF_Ignore == nil) then
-			MBF_Ignore = { "MetamapButton" };
+			MBF_Ignore = CloneTable(MBF_Default_Ignore)
 		end
 		if (initMBF_FrameLocation ~= MBF_FrameLocation) then
 			setMBFLocation();
@@ -774,6 +789,13 @@ function addButton(button)
 			button:SetScript('OnEvent', nil);
 		end
 		
+		if (buttonName == "ISync_MiniMapButtonFrame")  then
+	--		Sea.io.print(buttonName)
+			ISync_MiniMapButton:SetPoint("TOPLEFT",ISync_MiniMapButtonFrame,"TOPLEFT",0,0)
+			button.osetpoint = ISync_MiniMapButton.SetPoint --ISync.MiniMapButton_UpdatePosition
+			ISync_MiniMapButton.SetPoint = function() end;
+		end
+		
 		if (buttonName == "MonkeyBuddyIconButton") then
 			button:SetWidth(33);
 			button:SetHeight(33);
@@ -813,6 +835,11 @@ restoreButtonSettings = function(button)
 				restoreChildScripts(button);
 			end
 
+			if (buttonName == "ISync_MiniMapButtonFrame")  then
+				ISync_MiniMapButton.SetPoint = button.osetpoint
+				ISync:MiniMapButton_UpdatePosition()
+			end
+			
 			updatePositions();
 
 			button:GetParent():Show();
@@ -1456,8 +1483,8 @@ function MBFC_Defaults()
 
 	MBFC:Hide();
 	
-	MBF_Ignore = { "MetamapButton" };
-	MBF_Include = { };
+	MBF_Ignore = CloneTable(MBF_Default_Ignore)
+	MBF_Include = CloneTable(MBF_Default_Include)
 	MBF_FrameLocation = { "CENTER", "CENTER", 0, 0 };
 	MBF_Vars = { 5, 3, .8, false, 1, false, false, "Nothing", true, false, false, false, 1, { 0, 0, 0}, true, "Alpha", false, false, false, false, false, false, true, false };
 	padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTrackingFrame, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp = unpack(MBF_Vars);

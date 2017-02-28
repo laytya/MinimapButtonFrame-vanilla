@@ -42,6 +42,15 @@ Minimap Button:
 
 #History
 
+1.10c
+
++ Added ItemSync compatibility
++ Added DPSMate button to default auto include, if it not gathering by MBF use /mbf add command
+
+1.10b
+
++ fixed finally MiniMapTrackingFrame error	
+
 1.10a	
 
 + fix MiniMapTrackingFrame error
