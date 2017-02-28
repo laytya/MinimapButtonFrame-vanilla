@@ -42,7 +42,7 @@ sortOrder = "Alpha"
 local disabledMail = true;
 local rollUp = false;
 
-MBFHideMiniMapTracking = false;
+MBFHideMiniMapTrackingFrame = false;
 MBFHideMiniMapVoiceChatFrame = false;
 MBFHideMiniMapWorldMapButton = false;
 --MBFHideMiniMapMeetingStoneFrame = false;
@@ -200,7 +200,7 @@ function MBF_OnEvent()
 	
 	if ((event == "ADDON_LOADED") and (arg1 == "MinimapButtonFrame")) then	
 		if (initMBF_Vars ~= MBF_Vars) then
-			padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTracking, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp = unpack(MBF_Vars);
+			padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTrackingFrame, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp = unpack(MBF_Vars);
 			fixNils();			
 			updateMBFVars();
 		end
@@ -765,7 +765,7 @@ function addButton(button)
 			button:SetScript('OnShow', nil);
 			button:SetFrameLevel(MinimapButtonFrame:GetFrameLevel()+1)
 		end
-		if ((buttonName == "MiniMapTracking") or (buttonName == "GameTimeFrame")) then
+		if ((buttonName == "MiniMapTrackingFrame") or (buttonName == "GameTimeFrame")) then
 			button:SetWidth(36);
 			button:SetHeight(36);
 		end
@@ -1088,7 +1088,7 @@ end
 
 function updateMBFVars()
 
-	MBF_Vars = { padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTracking, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp };
+	MBF_Vars = { padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTrackingFrame, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp };
 end
 
 function MBFC_Toggle ()
@@ -1460,7 +1460,7 @@ function MBFC_Defaults()
 	MBF_Include = { };
 	MBF_FrameLocation = { "CENTER", "CENTER", 0, 0 };
 	MBF_Vars = { 5, 3, .8, false, 1, false, false, "Nothing", true, false, false, false, 1, { 0, 0, 0}, true, "Alpha", false, false, false, false, false, false, true, false };
-	padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTracking, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp = unpack(MBF_Vars);
+	padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTrackingFrame, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp = unpack(MBF_Vars);
 
 	setMBFLocation();
 	MinimapButtonFrame:SetUserPlaced(false);

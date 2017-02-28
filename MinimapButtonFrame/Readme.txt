@@ -130,7 +130,9 @@ History
 	 + minor fixes
 1.10a	
 	+ fix MiniMapTrackingFrame error
-	+ fix some interaddon compatibility, dont use such names:  "minimapButton"	
+	+ fix some interaddon compatibility, dont use such names:  "minimapButton"
+1.10b
+        + fixed finally MiniMapTrackingFrame error	
 	
 Known Incompatibilities / Bugs
 
