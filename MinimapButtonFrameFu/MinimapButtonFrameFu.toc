@@ -3,7 +3,7 @@
 ## Notes: FuBar plugin for Minimap Button Frame.
 ## Notes-ruRU: FuBar плагин для Minimap Button Frame.
 ## Author: Bachlott, laytya
-## Version: 1.10c
+## Version: 1.10d
 ## SavedVariablesPerCharacter: MBFFuDB
 ## OptionalDeps: TabletLib, Ace2
 ## Dependencies: FuBar, MinimapButtonFrame
