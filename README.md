@@ -17,8 +17,10 @@ If Active Scanning is off they will not be gathered unless you do a < /mbf scan 
 
 
 #Basic install instructions
-  - Extract the archive
-  - Copy "MinimapButtonFrame" folder into your "<WOW FOLDER>/Interface/Addons/" directory
+
+- Extract the archive
+- Copy "MinimapButtonFrame" folder into your "\<WOW FOLDER>/Interface/Addons/" directory
+- Optionaly (if you have FuBar) copy "MinimapButtonFrameFu" folder into your "\<WOW FOLDER>/Interface/Addons/" directory  
 
 
 #Commands:
@@ -41,6 +43,10 @@ Minimap Button:
 
 
 #History
+
+1.10d
+
++ Separate FuBar plugin (need translation of locales differ enUS and ruRU)
 
 1.10c
 
