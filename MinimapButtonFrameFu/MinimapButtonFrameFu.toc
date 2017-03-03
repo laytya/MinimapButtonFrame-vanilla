@@ -1,0 +1,24 @@
+## Interface: 11200
+## Title: FuBar - |cffffffffMBF|r|cff00ff00Fu|r
+## Notes: FuBar plugin for Minimap Button Frame.
+## Notes-ruRU: FuBar плагин для Minimap Button Frame.
+## Author: Bachlott, laytya
+## Version: 1.10c
+## SavedVariablesPerCharacter: MBFFuDB
+## OptionalDeps: TabletLib, Ace2
+## Dependencies: FuBar, MinimapButtonFrame
+## X-Category: Interface Enhancements
+
+## LIBS START
+## X-Embeds: Ace2, FuBarPlugin-2.0, TabletLib
+libs\AceLibrary\AceLibrary.lua
+libs\AceEvent-2.0\AceEvent-2.0.lua
+libs\AceAddon-2.0\AceAddon-2.0.lua
+libs\AceDB-2.0\AceDB-2.0.lua
+libs\AceLocale-2.2\AceLocale-2.2.lua
+libs\Tablet-2.0\Tablet-2.0.lua
+libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua
+## LIBS END
+
+MBFFuLocale.lua
+MBFFu.lua

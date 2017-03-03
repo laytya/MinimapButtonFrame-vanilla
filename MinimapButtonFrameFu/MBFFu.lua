@@ -4,7 +4,7 @@ if not IsAddOnLoaded("FuBar") then
 end
 
 local tablet = AceLibrary("Tablet-2.0");
-local AL = AceLibrary("AceLocale-2.2"):new("MBF");
+local L = AceLibrary("AceLocale-2.2"):new("MBFFu");
 local refreshTime = 1;
 local fuBarName = "FuBarPluginMinimap Button FrameFrame";
 
@@ -38,10 +38,10 @@ end
 function MBFFu:OnTooltipUpdate()
 	local cat = tablet:AddCategory()
 	
-	if getglobal(fuBarName):IsShown() then
-		cat:AddLine("text", "|cff1eff00Left-Click|r |cffffffffShow/Hide MBF|r")
-	end
-	cat:AddLine("text", "|cff1eff00Shift-Click|r |cffffffffShow Config Screen|r")
+	--if getglobal(fuBarName):IsShown() then
+		cat:AddLine("text", L["|cff1eff00Left-Click|r |cffffffffShow/Hide MBF|r"])
+	--end
+	cat:AddLine("text", L["|cff1eff00Shift-LeftClick|r |cffffffffShow Config Screen|r"])
 end
 
 function MBFFu:OnClick(button)
