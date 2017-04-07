@@ -44,6 +44,10 @@ Minimap Button:
 
 #History
 
+1.10e
+
++ Added support for EVTCalendar
+
 1.10d
 
 + Separate FuBar plugin (need translation of locales differ enUS and ruRU)
