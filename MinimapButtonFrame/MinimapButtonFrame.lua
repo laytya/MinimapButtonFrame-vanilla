@@ -77,7 +77,7 @@ local MinimapIcons = { "Note", "JQuest", "Naut_", "MinimapIcon", "GatherMatePin"
 local ParentStop = { "WorldFrame", "Minimap", "MinimapBackdrop", "UIParent", "MinimapCluster", "CECBMiniMapButtonFrame", "CT_RASetsFrame", "simpleMinimapFrame" };
 
 MBF_Default_Ignore = { "MetamapButton" };
-MBF_Default_Include = { "DPSMate_MiniMap"};
+MBF_Default_Include = { "DPSMate_MiniMap","EVTButtonFrame"};
 
 MBF_FrameLocation = { "CENTER", "CENTER", 0, 0 };
 MBF_Vars = { 5, 3, .8, false, 1, false, false, "Nothing", true, false, false, false, 1, { 0, 0, 0}, true, "Alpha", false, false, false, false, false, false, true, false };
@@ -785,6 +785,12 @@ function addButton(button)
 			button:SetHeight(36);
 		end
 		
+		if (buttonName == "EVTButtonFrame") then
+			EVTButtonFrame:SetWidth(33)
+			EVTButtonFrame:SetHeight(33)
+			EVTButton:SetScale(33/48)
+		end
+		
 		if (buttonName == "CensusButtonFrame")  then
 			button:SetScript('OnEvent', nil);
 		end
@@ -800,7 +806,7 @@ function addButton(button)
 			button:SetWidth(33);
 			button:SetHeight(33);
 		end
-		if (((button:GetHeight() > 33) or (button:GetHeight() < 33)) and (buttonName ~= "AM_MinimapButton")) then
+		if (((button:GetHeight() > 33) or (button:GetHeight() < 33)) and  (buttonName ~= "AM_MinimapButton") and (buttonName ~= "EVTButtonFrame") ) then
 			button:SetScale(33 / button:GetHeight());
 		end
 	end

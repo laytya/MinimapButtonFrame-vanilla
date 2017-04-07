@@ -138,6 +138,12 @@ History
         + Added ItemSync compatibility
 	+ Added DPSMate button to default auto include, if it not gathering by MBF use /mbf add command
 	
+1.10d
+        + Separate FuBar plugin (need translation of locales differ enUS and ruRU)
+
+1.10e
+        + Added support for EVTCalendar
+	
 Known Incompatibilities / Bugs
 
 	The MetaMap minimap button is incompatable because of the continual reseting of its position by the MetaMap addon.
