@@ -3,10 +3,10 @@
 if (GetLocale() == "esES") then
 
 	-- Ataduras
-	BINDING_HEADER_MBF_SEP = "Minimapa botón Frame";
+	BINDING_HEADER_MBF_SEP = "Minimapa Botón Frame";
 	BINDING_NAME_MBF_CONFIG = "Cambiar configuración";
 	BINDING_NAME_MBF_TOGGLE = "Cambiar MBF";
-	BINDING_NAME_MBF_ADD = "Añadir Button";
+	BINDING_NAME_MBF_ADD = "Añadir Botón";
 	BINDING_NAME_MBF_REMOVE = "Eliminar Botón";
 
 	-- Config
