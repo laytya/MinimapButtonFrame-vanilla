@@ -5,6 +5,11 @@
  
  ![Imgur](http://i.imgur.com/4swDXim.jpg)
  
+ One more example of using MBF
+ 
+ ![image](https://github.com/laytya/MinimapButtonFrame-vanilla/assets/20452393/3ceef591-8190-41db-8ed9-6d2d26a81230)
+
+ 
 This addon gathers up all of your minimap addon buttons and puts them into a movable frame.
 
 To Add a button not automatically gathered: Put your mouse over the button you want to add and type < /mbf add >.  
@@ -16,14 +21,14 @@ Blizzard minimap buttons that are not always visible (Battleground, LFG) will on
 If Active Scanning is off they will not be gathered unless you do a < /mbf scan > while they are visible.
 
 
-#Basic install instructions
+# Basic install instructions
 
 - Extract the archive
 - Copy "MinimapButtonFrame" folder into your "\<WOW FOLDER>/Interface/Addons/" directory
 - Optionaly (if you have FuBar) copy "MinimapButtonFrameFu" folder into your "\<WOW FOLDER>/Interface/Addons/" directory  
 
 
-#Commands:
+# Commands:
 
    /mbf        - displays the command line options in the chat frame
    /mbf add    - adds a non gathered button under the mouse to the frame
@@ -42,7 +47,7 @@ Minimap Button:
 <Right-click> and drag - to move the minimap button anywhere.
 
 
-#History
+# History
 
 1.10e
 
@@ -74,8 +79,9 @@ Minimap Button:
 + minor fixes
 	
 # Download
-#<a href="https://github.com/laytya/MinimapButtonFrame-vanilla/releases/latest">Download HERE</a>
+[Download HERE](https://github.com/laytya/MinimapButtonFrame-vanilla/releases/latest)
 
-#Credits
+
+# Credits
 
 Originaly made by Bachlott
