@@ -3,7 +3,7 @@
  
  ![Imgur](http://i.imgur.com/Tkf3gaa.jpg) ![Imgur](http://i.imgur.com/Kn2r6R5.jpg)
  
- ![Imgur](http://i.imgur.com/4swDXim.jpg)
+![options](https://github.com/laytya/MinimapButtonFrame-vanilla/assets/20452393/6391d50c-c52d-4b37-bb5e-cd10a90d93e0)
  
  One more example of using MBF
  
