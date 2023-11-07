@@ -48,7 +48,12 @@ Minimap Button:
 
 
 # History
+v1.11
 
++ Added Auto Hide functionality
++ Added TWoW buttons
++ some fixes
+  
 1.10e
 
 + Added support for EVTCalendar
