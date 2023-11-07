@@ -6,6 +6,7 @@
  ![Imgur](http://i.imgur.com/4swDXim.jpg)
  
  One more example of using MBF
+ 
  ![image](https://github.com/laytya/MinimapButtonFrame-vanilla/assets/20452393/3ceef591-8190-41db-8ed9-6d2d26a81230)
 
  
