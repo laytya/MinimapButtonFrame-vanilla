@@ -309,6 +309,7 @@ function MBF_OnDragStart()
 	if (locked == false) then
 		MinimapButtonFrame:StartMoving();
 		MinimapButtonFrame.isMoving = true;
+		MBF_timeToHide = -1
 	end
 end
 
@@ -327,6 +328,7 @@ function MBF_OnDragStop()
 
 		bPoint, bRelativeTo, bRelativePoint, bXofs, bYofs = MinimapButtonFrame:GetPoint();
 		MBF_FrameLocation = { bPoint, bRelativePoint, bXofs, bYofs };
+		MBF_timeToHide = 0
 	end
 end
 
