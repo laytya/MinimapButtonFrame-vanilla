@@ -14,6 +14,7 @@ if (GetLocale() == "esES") then
 
 	MBF_CONFIG_SortbyRows = "Ordenar por filas";
 	MBF_CONFIG_Locked = "Cerrado";
+	MBF_CONFIG_Autohide = "Auto-escondite";
 	MBF_CONFIG_SortOrder = "Ordenar";
 	MBF_CONFIG_HideLocked = "Ocultar una vez cerradas";
 	MBF_CONFIG_ColumnsorRows = "Columnas o Filas";

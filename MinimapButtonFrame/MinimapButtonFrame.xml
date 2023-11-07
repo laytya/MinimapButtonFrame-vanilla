@@ -59,7 +59,7 @@
 				RollUp_OnEnter(1);
 			</OnEnter>
 			<OnLeave>
-				GameTooltip:Hide();
+				MBF_OnLeave();
 			</OnLeave>
 		</Scripts>
 		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
@@ -239,6 +239,23 @@
 							</OnLoad>
 							<OnClick>
 								MBFC_LockedToggle();
+							</OnClick>
+						</Scripts>
+						</CheckButton>
+						<CheckButton name="MBFCAutohide" inherits="OptionsCheckButtonTemplate">
+						<Anchors>
+							<Anchor point="TOPLEFT">
+							<Offset>
+								<AbsDimension x="170" y="-60"/>
+							</Offset>
+						</Anchor>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								getglobal(this:GetName().."Text"):SetText(MBF_CONFIG_Autohide);
+							</OnLoad>
+							<OnClick>
+								MBFC_AutohideToggle();
 							</OnClick>
 						</Scripts>
 						</CheckButton>

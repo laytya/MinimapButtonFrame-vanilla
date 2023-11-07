@@ -13,6 +13,7 @@ if (GetLocale() == "ruRU") then
 
 	MBF_CONFIG_SortbyRows = "Сортировать по рядам";
 	MBF_CONFIG_Locked = "Закрепить";
+	MBF_CONFIG_Autohide = "Авто-скрытие";
 	MBF_CONFIG_SortOrder = "Порядок сортировки";
 	MBF_CONFIG_HideLocked = "Скрыть при закреплении";
 	MBF_CONFIG_ColumnsorRows = "Колонки или Ряды";

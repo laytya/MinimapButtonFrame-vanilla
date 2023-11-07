@@ -13,6 +13,7 @@ MBF_CONFIG_MBFOptions = "MBF Options";
 
 MBF_CONFIG_SortbyRows = "Sort by Rows";
 MBF_CONFIG_Locked = "Locked";
+MBF_CONFIG_Autohide = "Auto hide";
 MBF_CONFIG_SortOrder = "Sort Order";
 MBF_CONFIG_HideLocked = "Hide When Locked";
 MBF_CONFIG_ColumnsorRows = "Columns or Rows";

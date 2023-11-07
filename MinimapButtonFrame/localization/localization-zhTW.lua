@@ -17,6 +17,7 @@ if (GetLocale() == "zhTW") then
 
 	MBF_CONFIG_SortbyRows = "排列方向";
 	MBF_CONFIG_Locked = "鎖定";
+	MBF_CONFIG_Autohide = "自动隐藏";
 	MBF_CONFIG_SortOrder = "排序";
 	MBF_CONFIG_HideLocked = "鎖定后隱藏框體背景";
 	MBF_CONFIG_ColumnsorRows = "每行排列數";

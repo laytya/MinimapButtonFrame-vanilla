@@ -14,6 +14,7 @@ if (GetLocale() == "deDE") then
 
 	MBF_CONFIG_SortbyRows = "Sortieren von Zeilen";
 	MBF_CONFIG_Locked = "Gesperrt";
+	MBF_CONFIG_Autohide = "Automatisch ausblenden";
 	MBF_CONFIG_SortOrder = "Sortierreihenfolge";
 	MBF_CONFIG_HideLocked = "Ausblenden wenn gesperrt";
 	MBF_CONFIG_ColumnsorRows = "Spalten oder Zeilen";

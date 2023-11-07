@@ -1,10 +1,14 @@
 local version = GetAddOnMetadata("MinimapButtonFrame", "Version");
 local time = 0;
+MBF_timeToHide = -1;
 local scanned = false;
 local paused = false;
 local MBF_ButtonInfoStorage = {};
 local MBF_ChildEventStorage = {};
 local MBF_Sorted = {};
+
+local _, build , _ = GetBuildInfo()
+local tWOW  = tonumber(build) > 6000
 
 local oldParentName;
 local oldPoint;
@@ -41,6 +45,7 @@ activeScanning = true;
 sortOrder = "Alpha"
 local disabledMail = true;
 local rollUp = false;
+local autoHide = false;
 
 MBFHideMiniMapTrackingFrame = false;
 MBFHideMiniMapVoiceChatFrame = false;
@@ -72,15 +77,19 @@ local MinimapShapes = {
 
 local BlizzButtons = { "MiniMapTrackingFrame", "MiniMapMeetingStoneFrame", "MinimapZoomIn", "MinimapZoomOut", "MiniMapMailFrame", "MiniMapBattlefieldFrame", "GameTimeFrame" };
 local BlizzUI = { "ActionBar", "BonusActionButton", "MainMenu", "ShapeshiftButton", "MultiBar", "KeyRingButton", "PlayerFrame", "TargetFrame", "PartyMemberFrame", "ChatFrame", "ExhaustionTick", "TargetofTargetFrame", "WorldFrame", "ActionButton", "CharacterMicroButton", "SpellbookMicroButton", "TalentMicroButton", "QuestLogMicroButton", "SocialsMicroButton", "LFGMicroButton", "HelpMicroButton", "CharacterBag", "PetFrame",  "MinimapCluster", "MinimapBackdrop", "UIParent", "WorldFrame", "Minimap", "BuffButton", "BuffFrame", "TimeManagerClockButton" };
-local UserUIProtected = { "TitanPanel", "AutoBarButton", "FuBarFrame", "RicoMinimap_CoordinatesFrame", "MinimapZoom", "MinimapButtonFrame", "Xparky", "MBFRestoreButton", "BasicMiniMap", "CT_RASetsFrame", "simpleMinimapFrame"};
-local MinimapIcons = { "Note", "JQuest", "Naut_", "MinimapIcon", "GatherMatePin", "WestPointer", "Chinchilla_", "SmartMinimapZoom","QuestieNote", "smm", "FishingExtra","pfMiniMapPin" };
+local UserUIProtected = { "TitanPanel", "AutoBarButton", "FuBarFrame", "RicoMinimap_CoordinatesFrame", "MinimapZoom", "MinimapButtonFrame", "Xparky", "MBFRestoreButton", "BasicMiniMap", "CT_RASetsFrame", "simpleMinimapFrame",};
+local MinimapIcons = { "Note", "JQuest", "Naut_", "MinimapIcon", "GatherMatePin", "WestPointer", "Chinchilla_", "SmartMinimapZoom","QuestieNote", "smm", "FishingExtra","pfMiniMapPin","Spy_" };
 local ParentStop = { "WorldFrame", "Minimap", "MinimapBackdrop", "UIParent", "MinimapCluster", "CECBMiniMapButtonFrame", "CT_RASetsFrame", "simpleMinimapFrame" };
 
 MBF_Default_Ignore = { "MetamapButton" };
 MBF_Default_Include = { "DPSMate_MiniMap","EVTButtonFrame"};
 
+if tWOW then
+	MBF_Default_Include = { "DPSMate_MiniMap","EVTButtonFrame", "TWMinimapShopFrame", "TWMiniMapBattlefieldFrame","LFT_Minimap"};
+end
+
 MBF_FrameLocation = { "CENTER", "CENTER", 0, 0 };
-MBF_Vars = { 5, 3, .8, false, 1, false, false, "Nothing", true, false, false, false, 1, { 0, 0, 0}, true, "Alpha", false, false, false, false, false, false, true, false };
+MBF_Vars = { 5, 3, .8, false, 1, false, false, "Nothing", true, false, false, false, 1, { 0, 0, 0}, true, "Alpha", false, false, false, false, false, false, true, false, false };
 
 local initMBF_Vars = MBF_Vars;
 local initMBF_FrameLocation = MBF_FrameLocation;
@@ -119,23 +128,33 @@ end
 
 function MBF_OnUpdate(elapsed)
 
-	time = time + elapsed;
+	time = time + elapsed; 
+	if MBF_timeToHide >= 0 then
+		MBF_timeToHide = MBF_timeToHide + elapsed;
+	end
 	if (paused == false) then
 		if (scanned == false) then
 			if (time > 10) then 
 				MBF_Scan();
 				scanned = true;
+				MBF_timeToHide = 4;
 				if mbfHidden then
 					MinimapButtonFrame:Hide();
+					MBF_timeToHide = -1;
 				end
 				if rollUp then
 					MBFRestoreButton:Show();
+					
 				end
 			end
 		end
 		if ((activeScanning) and (time > 1) and (scanned)) then
 			MBF_Scan();
 			time = 0;
+		end
+		if scanned and autoHide and MinimapButtonFrame:IsVisible() and MBF_timeToHide > 5 then
+			MBF_timeToHide = -1;
+			MinimapButtonFrame:Hide();
 		end
 	end
 end
@@ -193,6 +212,9 @@ function fixNils()
 	if (rollUp == nil) then
 		rollUp = false;
 	end
+	if (autoHide == nil) then
+		autoHide = false;
+	end
 	for k,v in ipairs(BlizzButtons) do
 		if ((v ~= "MinimapZoomOut") and (v ~= "MiniMapBattlefieldFrame") and (v ~= "MiniMapMeetingStoneFrame")) then
 			if (getglobal("MBFHide"..v) == nil) then
@@ -215,7 +237,7 @@ function MBF_OnEvent()
 	
 	if ((event == "ADDON_LOADED") and (arg1 == "MinimapButtonFrame")) then	
 		if (initMBF_Vars ~= MBF_Vars) then
-			padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTrackingFrame, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp = unpack(MBF_Vars);
+			padding, columns_or_rows, addonScale, debug, opacity, sort_by_rows, locked, colorLocked, MBFminimapButton, mbfHidden, grabBlizzButtons, grabMBFButton, colorOpacity, MBFBackdropColor, activeScanning, sortOrder, MBFHideMiniMapTrackingFrame, MBFHideMiniMapVoiceChatFrame, MBFHideMiniMapWorldMapButton, MBFHideMinimapZoomIn, MBFHideMiniMapMailFrame, MBFHideGameTimeFrame, disabledMail, rollUp, autoHide = unpack(MBF_Vars);
 			fixNils();			
 			updateMBFVars();
 		end
@@ -768,6 +790,20 @@ function addButton(button)
 		button:SetParent(MinimapButtonFrame)
 		button:SetScript('OnDragStart', nil);
 		button:SetScript('OnDragStop', nil);
+		button.oenter = button:GetScript("OnEnter");
+		button:SetScript("OnEnter", function()
+			MBF_timeToHide = -1;
+			if( this.oenter ) then
+				this.oenter();
+			end
+		end);
+		button.oleave = button:GetScript("OnLeave");
+		button:SetScript("OnLeave", function()
+			MBF_timeToHide = 0;
+			if( this.oleave ) then
+				this.oleave();
+			end
+		end);
 		
 		if (isButtonFrame(button)) then
 			saveAndDisableChildScripts(button);
@@ -791,17 +827,28 @@ function addButton(button)
 			EVTButton:SetScale(33/48)
 		end
 		
+		if (buttonName =="SprocketMinimapButton") then
+			SprocketMinimapButton:SetWidth(33)
+			SprocketMinimapButton:SetHeight(33)
+			SprocketMinimapButton:SetScale(33/48)
+		end
+
 		if (buttonName == "CensusButtonFrame")  then
 			button:SetScript('OnEvent', nil);
 		end
 		
 		if (buttonName == "ISync_MiniMapButtonFrame")  then
-	--		Sea.io.print(buttonName)
 			ISync_MiniMapButton:SetPoint("TOPLEFT",ISync_MiniMapButtonFrame,"TOPLEFT",0,0)
 			button.osetpoint = ISync_MiniMapButton.SetPoint --ISync.MiniMapButton_UpdatePosition
 			ISync_MiniMapButton.SetPoint = function() end;
 		end
 		
+		if (buttonName == "ABProfiles_IconFrame")  then
+			ABProfilesButton:ClearAllPoints()
+			ABProfilesButton:SetPoint("CENTER",0,0)
+			ABProfilesButton:SetScale(0.8)
+		end
+
 		if (buttonName == "MonkeyBuddyIconButton") then
 			button:SetWidth(33);
 			button:SetHeight(33);
@@ -830,7 +877,9 @@ restoreButtonSettings = function(button)
 			button:SetScript('OnDragStart', oldOnDragStart);
 			button:SetScript('OnDragStop', oldOnDragStop);
 			button:SetScript('OnEvent', oldOnEvent);
-			--if button:GetName() == "IEFMinimapButton" then printf(oldWidth or "nil") end;
+			button:SetScript("OnEnter",button.oenter);
+			button:SetScript("OnLeave", button.oleave);
+
 			button:SetWidth(oldWidth or 31);
 			button:SetHeight(oldHeight or 31);
 			button:SetScale(oldScale or 1);
@@ -845,7 +894,7 @@ restoreButtonSettings = function(button)
 				ISync_MiniMapButton.SetPoint = button.osetpoint
 				ISync:MiniMapButton_UpdatePosition()
 			end
-			
+
 			updatePositions();
 
 			button:GetParent():Show();
@@ -950,7 +999,7 @@ function includeButton(button)
 				includeButton(button:GetParent())
 			end
 		else
-			printf(MBF_ERR4 .. " : " .. button:GetName());
+			printf(MBF_ERR4 .. " : " .. button:GetName().." not valid");
 		end 
 	else
 		printf(MBF_ERR4 .. " : " .. button:GetName());
@@ -1159,9 +1208,11 @@ local activate = false;
 		if MinimapButtonFrame:IsVisible() then
 			MinimapButtonFrame:Hide();
 			mbfHidden = true;
+			MBF_timeToHide = -1
 		else
 			MinimapButtonFrame:Show();
 			mbfHidden = false;
+			MBF_timeToHide = 0
 		end
 		updateMBFVars();
 	end
@@ -1192,6 +1243,19 @@ function MBFC_LockedToggle()
 	end
 	MBFC_ColorLocked();
 	updateMBFVars();
+end
+
+function MBFC_AutohideToggle()
+	if (autoHide) then
+		autoHide = false
+		if not mbfHidden then
+			MinimapButtonFrame:Show();
+			MBF_timeToHide = -1;
+		end
+	else
+		autoHide = true
+		MBF_timeToHide = 0;
+	end
 end
 
 function MBFC_SortbyRowsToggle()
@@ -1539,6 +1603,7 @@ function MBFC_Init()
 	
 	MBFCSortbyRows:SetChecked(sort_by_rows);
 	MBFCLocked:SetChecked(locked);
+	MBFCAutohide:SetChecked(autoHide);
 	MBFCSliderColumns:SetValue(columns_or_rows);
 	MBFCSliderPadding:SetValue(padding);
 	MBFCSliderOpacity:SetValue(opacity);
@@ -1595,6 +1660,11 @@ function RollUp_OnEnter(setting)
 	GameTooltipTextLeft1:SetTextColor(1, 1, 1);
 	GameTooltip:AddLine(MBF_TOOLTIP_ROLLUP);
 	GameTooltip:Show();
+
+end
+
+function MBF_OnLeave()
+	GameTooltip:Hide();
 end
 
 -- Snap to Minimap

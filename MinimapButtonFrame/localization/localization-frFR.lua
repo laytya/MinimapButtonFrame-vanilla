@@ -14,6 +14,7 @@ if (GetLocale() == "frFR") then
 
 	MBF_CONFIG_SortbyRows = "Trier par lignes";
 	MBF_CONFIG_Locked = "Verrouillé";
+	MBF_CONFIG_Autohide = "Masquage automatique";
 	MBF_CONFIG_SortOrder = "Trier";
 	MBF_CONFIG_HideLocked = "Masquer en position verrouillée";
 	MBF_CONFIG_ColumnsorRows = "Des colonnes ou des lignes";
