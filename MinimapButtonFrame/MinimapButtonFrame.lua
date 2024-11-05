@@ -85,7 +85,7 @@ MBF_Default_Ignore = { "MetamapButton" };
 MBF_Default_Include = { "DPSMate_MiniMap","EVTButtonFrame"};
 
 if tWOW then
-	MBF_Default_Include = { "DPSMate_MiniMap","EVTButtonFrame", "TWMinimapShopFrame", "TWMiniMapBattlefieldFrame","LFT_Minimap"};
+	MBF_Default_Include = { "DPSMate_MiniMap","EVTButtonFrame", "MinimapShopFrame", "TWMiniMapBattlefieldFrame","LFTMinimapButton", "EBC_Minimap"};
 end
 
 MBF_FrameLocation = { "CENTER", "CENTER", 0, 0 };
@@ -134,7 +134,7 @@ function MBF_OnUpdate(elapsed)
 	end
 	if (paused == false) then
 		if (scanned == false) then
-			if (time > 10) then 
+			if (time > 3) then 
 				MBF_Scan();
 				scanned = true;
 				MBF_timeToHide = 4;
@@ -586,11 +586,10 @@ end
 isValidAdd = function(frame, autoGather)
 	local result = true;
 	local frameName = frame:GetName();
-
 	if (frameName ~= nil) then
 		if (frame:IsVisible()) then
 			if (getTopParent(frame) == 1) then
-				if (isPartialMatch(frameName, BlizzUI) or isPartialMatch(frameName,UserUIProtected)) then
+				if (isPartialMatch(frameName, BlizzUI) or isInTable(UserUIProtected, frameName)) and not(isInTable(MBF_Default_Include,frameName)) then
 					result = false;
 				end
 
@@ -636,7 +635,6 @@ isValidAdd = function(frame, autoGather)
 		result = false;
 	end
 	return result
-
 end
 
 isButtonFrame = function(frame)

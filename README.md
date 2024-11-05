@@ -48,6 +48,9 @@ Minimap Button:
 
 
 # History
+v1.12
++ Updated to TWoW 1.17.2
+
 v1.11
 
 + Added Auto Hide functionality
